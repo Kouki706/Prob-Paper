@@ -1,2 +1,2 @@
-# Prob-Paper
+# ProbPaper
 Python program for probability paper.
