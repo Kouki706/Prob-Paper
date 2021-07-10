@@ -9,8 +9,8 @@ def Exp_re(x):
     return np.log(1/(1-x))
 
 # 回帰式
-def func(x, a, b):
-    f = a*x + b
+def func(x, a):
+    f = a*x
     return f
 
 # データの読み込み
@@ -46,10 +46,9 @@ qqq=Qin
 popt, pcov = curve_fit(func,qqq,ppp)
 rr=np.corrcoef(qqq,ppp)
 aa = popt[0]
-bb = popt[1]
 
 # 決定係数
-residuals =  ppp - func(qqq, popt[0],popt[1])
+residuals =  ppp - func(qqq, popt[0])
 rss = np.sum(residuals**2)
 tss = np.sum((ppp-np.mean(ppp))**2)
 r_squared = 1 - (rss / tss)
@@ -124,7 +123,7 @@ ax.set_yticklabels(_dy, fontsize = 5)
 
 # 値のプロット
 ax.scatter(qqq,ppp,s = 2, alpha=0.8,linewidths=0.1,c="mediumslateblue",ec = "navy" ,zorder=10)
-ax.plot([xmin, xmax], [aa*xmin + bb, aa*xmax + bb], color='k', linestyle='-', linewidth=0.25, zorder=9)
+ax.plot([xmin, xmax], [aa*xmin, aa*xmax], color='k', linestyle='-', linewidth=0.25, zorder=9)
 
 # 文字のプロット
 ax.text(xmin, ymax + (ymax-ymin)/50, "F(t) (%)   Median Ranks", ha = 'left', va = 'bottom', fontsize=5)

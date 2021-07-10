@@ -74,7 +74,7 @@ xmin=qqq[0] - (qqq[max-1]-qqq[0])/100
 xmax=qqq[max-1] + (qqq[max-1]-qqq[0])/100
 
 # y軸の最大・最小
-ymin=Gumbel(0.001)
+ymin=Gumbel(0.0001)
 ymax=Gumbel(0.999)
 
 # 図の描画範囲
@@ -89,7 +89,7 @@ ax.tick_params(direction = "inout", axis = "x", length=2, width=0)
 ax.tick_params(direction = "out", axis = "y", length=2, width=0)
 
 # y軸目盛用
-_dy=np.array([0.001,0.01,0.1,0.5,0.9,0.95,0.99,0.995,0.999])
+_dy=np.array([0.0001, 0.001,0.01,0.1,0.5,0.9,0.95,0.99,0.995,0.999])
 dy=Gumbel(_dy)
 _dy=_dy * 100
 

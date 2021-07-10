@@ -142,7 +142,7 @@ dx_tick_sub=np.log(_dx_tick_sub)
 
 # 鉛直軸の描画
 plt.vlines(dx_tick, ymin, ymax, color='mediumpurple',linewidth=0.1)
-plt.vlines(0.5, ymin, ymax, color='black',linewidth=0.1)
+plt.vlines(0.0, ymin, ymax, color='black',linewidth=0.1)
 
 # x軸目盛
 # for i in range(7):

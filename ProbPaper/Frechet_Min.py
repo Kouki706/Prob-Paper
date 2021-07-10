@@ -81,7 +81,7 @@ xmin=np.log(_xmin) - (np.log(_xmax)-np.log(_xmin))/100
 xmax=np.log(_xmax) + (np.log(_xmax)-np.log(_xmin))/100
 
 # y軸の最大・最小
-ymin=Frechet(0.001)
+ymin=Frechet(0.0001)
 ymax=Frechet(0.999)
 
 # 図の描画範囲
@@ -99,7 +99,7 @@ ax.tick_params(which= "minor", left=False)
 ax.minorticks_on()
 
 # y軸目盛用
-_dy=np.array([0.001,0.01,0.1,0.5,0.9,0.95,0.99,0.995,0.999])
+_dy=np.array([0.0001, 0.001,0.01,0.1,0.5,0.9,0.95,0.99,0.995,0.999])
 dy=Frechet(_dy)
 _dy=_dy * 100
 
@@ -186,7 +186,7 @@ if alpha > 2:
     var = (s*s*( math.gamma(1-2/alpha) - (math.gamma(1-1/alpha))**2 ))
     print('標準偏差={var:10.6f}'.format(**locals()))
 else:
-    print('平均=∞')
+    print('標準偏差=∞')
 
 print('相関係数={rr[0][1]:10.6f}'.format(**locals()))
 print('決定係数={r_squared:10.6f}'.format(**locals()))
