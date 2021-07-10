@@ -35,9 +35,10 @@ All comments in the program are in Japanese.
 - Koki Kawahara (Kansai University)
 
 ## Version History
-
+* 0.2
+   * Add Program for examining distribution
 * 0.1
-    * Initial Release
+   * Initial Release
 
 
 ## License
