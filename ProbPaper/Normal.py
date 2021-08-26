@@ -8,7 +8,7 @@ from matplotlib.backends.backend_pdf import PdfPages
 
 # 回帰式
 def func(x, a, b):
-    f = a * x + b
+    f = a*x + b
     return f
 
 # データの読み込み
@@ -22,12 +22,12 @@ print("データ数", max)
 # メジアンランク法
 Pin = np.empty(max)
 for i in range(max):
-    Pin[i] = (i + 0.7) / (max + 0.4)
+    Pin[i] = (i+0.7) / (max+0.4)
 
 # 重複する値の判定
-for i in range(max - 2, 0, -1):
-    if(Qin[i] == Qin[i + 1]):
-        Pin[i] = Pin[i + 1]
+for i in range(max-2, 0, -1):
+    if(Qin[i] == Qin[i+1]):
+        Pin[i] = Pin[i+1]
 
 # 重複する値を除く
 Pin = np.unique(Pin)
@@ -55,7 +55,7 @@ bb = popt[1]
 # 決定係数
 residuals = ppp - func(qqq, popt[0], popt[1])
 rss = np.sum(residuals**2)
-tss = np.sum((ppp - np.mean(ppp))**2)
+tss = np.sum((ppp-np.mean(ppp))**2)
 r_squared = 1 - (rss / tss)
 
 # 図の書式
@@ -71,8 +71,8 @@ ax.spines['left'].set_linewidth(0.1)
 ax.spines['bottom'].set_linewidth(0.1)
 
 # x軸の最大・最小
-xmin = qqq[0] - (qqq[max - 1] - qqq[0]) / 100
-xmax = qqq[max - 1] + (qqq[max - 1] - qqq[0]) / 100
+xmin = qqq[0] - (qqq[max-1]-qqq[0])/100
+xmax = qqq[max-1] + (qqq[max-1]-qqq[0])/100
 
 # y軸の最大・最小
 ymin = norm.ppf(0.0001, loc=0, scale=1)
@@ -105,10 +105,10 @@ dy_tick_sub = norm.ppf(_dy_tick_sub, loc=0, scale=1)
 # x軸の目盛
 _dx = np.empty(7)
 _dx[0] = qqq[0]
-_dx[6] = qqq[max - 1]
+_dx[6] = qqq[max-1]
 
 # x軸の表示目盛の計算
-ddx = (_dx[6] - _dx[0]) / 6
+ddx = (_dx[6]-_dx[0])/6
 for i in range(1, 6, 1):
     _dx[i] = _dx[0] + ddx * i
 
@@ -145,14 +145,14 @@ ax_.set_yticklabels(["$\mu-3\sigma$", "$\mu-2\sigma$", "$\mu-\sigma$", "$\mu$", 
 
 # 値のプロット
 ax.scatter(qqq, ppp, s=2, alpha=0.7, linewidths=0.2, c="mediumslateblue", ec="navy", zorder=10)
-ax.plot([qqq[0], qqq[max - 1]], [aa * qqq[0] + bb, aa * qqq[max - 1] + bb], color='navy', linestyle='-', linewidth=0.3, zorder=9)
+ax.plot([qqq[0], qqq[max-1]], [aa*qqq[0] + bb, aa*qqq[max-1] + bb], color='navy', linestyle='-', linewidth=0.3, zorder=9)
 
 # 文字のプロット
-ax.text(xmin - (xmax - xmin) / 13, ymax + (ymax - ymin) / 50, "　　　メジアンランク法\nF(t)　(%)", ha='left', va='bottom', font="IPAexGothic", fontsize=4.5)
+ax.text(xmin - (xmax-xmin)/13, ymax + (ymax-ymin)/50, "　　　メジアンランク法\nF(t)　(%)", ha='left', va='bottom', font="IPAexGothic", fontsize=4.5)
 
 # 平均・標準偏差
-var = 1 / aa
-mean = -bb / aa
+var = 1/aa
+mean = -bb/aa
 print('平均 = {mean:10.6f}'.format(**locals()))
 print('標準偏差 = {var:10.6f}'.format(**locals()))
 
@@ -164,8 +164,7 @@ boxdic = {
     "linewidth": 0.15,
 }
 _gamma = 0.0
-ax.text(xmin + (xmax - xmin) / 45, ymax - (ymax - ymin) / 8.5,
-        "\t $\mu$ ={mean:15.4f}\n\t $\sigma$ ={var:15.4f}\n\t $\gamma$ ={_gamma:15.4f}\nMTTF ={mean:15.4f}".format(**locals()), fontsize=4, bbox=boxdic)
+ax.text(xmin + (xmax-xmin)/45, ymax - (ymax-ymin)/8.5, "\t $\mu$ ={mean:15.4f}\n\t $\sigma$ ={var:15.4f}\n\t $\gamma$ ={_gamma:15.4f}\nMTTF ={mean:15.4f}".format(**locals()), fontsize=4, bbox=boxdic)
 
 # 相関係数の表示
 print('相関係数 = {rr[0][1]:10.6f}'.format(**locals()))

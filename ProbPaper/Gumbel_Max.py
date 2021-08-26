@@ -12,8 +12,9 @@ def Gumbel(x):
 
 # 回帰式
 def func(x, a, b):
-    f = a * x + b
+    f = a*x + b
     return f
+
 
 # データの読み込み
 Qin = np.loadtxt('./Data.csv', delimiter=',', usecols=[0])
@@ -33,12 +34,12 @@ print("データ数", max)
 # メジアンランク法
 Pin = np.empty(max)
 for i in range(max):
-    Pin[i] = (i + 0.7) / (max + 0.4)
+    Pin[i] = (i+0.7) / (max+0.4)
 
 # 重複する値の設定
-for i in range(max - 2, 0, -1):
-    if(Qin[i] == Qin[i + 1]):
-        Pin[i] = Pin[i + 1]
+for i in range(max-2, 0, -1):
+    if(Qin[i] == Qin[i+1]):
+        Pin[i] = Pin[i+1]
 
 # 重複する値の削除
 Pin = np.unique(Pin)
@@ -66,7 +67,7 @@ bb = popt[1]
 # 決定係数
 residuals = ppp - func(qqq, popt[0], popt[1])
 rss = np.sum(residuals**2)
-tss = np.sum((ppp - np.mean(ppp))**2)
+tss = np.sum((ppp-np.mean(ppp))**2)
 r_squared = 1 - (rss / tss)
 
 # 図の書式
@@ -82,8 +83,8 @@ ax.spines['left'].set_linewidth(0.1)
 ax.spines['bottom'].set_linewidth(0.1)
 
 # x軸の最大・最小
-xmin = qqq[0] - (qqq[max - 1] - qqq[0]) / 100
-xmax = qqq[max - 1] + (qqq[max - 1] - qqq[0]) / 100
+xmin = qqq[0] - (qqq[max-1]-qqq[0])/100
+xmax = qqq[max-1] + (qqq[max-1]-qqq[0])/100
 
 # y軸の最大・最小
 ymin = Gumbel(0.001)
@@ -115,10 +116,10 @@ ax.hlines(0, xmin, xmax, color='black', linewidth=0.1)
 # x軸の目盛
 _dx = np.empty(7)
 _dx[0] = qqq[0]
-_dx[6] = qqq[max - 1]
+_dx[6] = qqq[max-1]
 
 # x軸の表示目盛の計算
-ddx = (_dx[6] - _dx[0]) / 6
+ddx = (_dx[6]-_dx[0])/6
 for i in range(1, 6, 1):
     _dx[i] = _dx[0] + ddx * i
 
@@ -152,19 +153,19 @@ ax_.set_yticklabels(_dy_right, fontsize=4)
 
 # 値のプロット
 ax.scatter(qqq, ppp, s=2, alpha=0.7, linewidths=0.2, c="mediumslateblue", ec="navy", zorder=2)
-ax.plot([qqq[0], qqq[max - 1]], [aa * qqq[0] + bb, aa * qqq[max - 1] + bb], color='navy', linestyle='-', linewidth=0.3, zorder=1)
+ax.plot([qqq[0], qqq[max-1]], [aa*qqq[0] + bb, aa*qqq[max-1] + bb], color='navy', linestyle='-', linewidth=0.3, zorder=1)
 
 # 文字のプロット
-ax.text(xmin - (xmax - xmin) / 13, ymax + (ymax - ymin) / 50, "　　　メジアンランク法\nF(t)　(%)", ha='left', va='bottom', font="IPAexGothic", fontsize=4.5)
+ax.text(xmin - (xmax-xmin)/13, ymax + (ymax-ymin)/50, "　　　メジアンランク法\nF(t)　(%)", ha='left', va='bottom', font="IPAexGothic", fontsize=4.5)
 
 # 有効データ数
 max = np.unique(Qin).size
 print("有効データ数 = ", max)
 
 # 統計量の計算
-mu = -bb / aa
-n = 1 / aa
-mean = mu + np.euler_gamma * n
+mu = -bb/aa
+n = 1/aa
+mean = mu + np.euler_gamma*n
 var = math.sqrt(np.pi**2 * n**2 / 6)
 # 統計量の表示
 print('位置パラメータ={mu:10.6f}'.format(**locals()))
@@ -182,8 +183,7 @@ boxdic = {
     "linewidth": 0.15,
 }
 _gamma = 0.0
-ax.text(xmin + (xmax - xmin) / 45, ymax - (ymax - ymin) / 8.5,
-        "\t $\\alpha$ ={n:10.4f}\n\t $u$ ={mu:10.4f}\n\t $\gamma$ ={_gamma:10.4f}\nMTTF ={mean:10.4f}".format(**locals()), fontsize=4, bbox=boxdic)
+ax.text(xmin + (xmax-xmin)/45, ymax - (ymax-ymin)/8.5, "\t $\\alpha$ ={n:10.4f}\n\t $u$ ={mu:10.4f}\n\t $\gamma$ ={_gamma:10.4f}\nMTTF ={mean:10.4f}".format(**locals()), fontsize=4, bbox=boxdic)
 
 plt.show()
 
