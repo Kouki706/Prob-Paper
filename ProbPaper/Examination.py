@@ -8,12 +8,12 @@ import matplotlib.pyplot as plt
 
 # 回帰式
 def func(x, a, b):
-    f = a * x + b
+    f = a*x + b
     return f
 
 # Weibull逆関数
 def Weibull(x):
-    return np.log(np.log(1 / (1 - x)))
+    return np.log(np.log(1/(1-x)))
 
 # 極値（最大）分布
 def Gumbel(x):
@@ -25,17 +25,25 @@ Qin = np.sort(Qin)
 
 # データサイズの取得
 max = Qin.size
+print("0以下を含むデータ数", max)
+
+# 0以下の削除(対数のため)
+Qin = Qin[Qin > 0]
+Qin = np.sort(Qin)
+
+# データサイズの取得
+max = Qin.size
 print("データ数", max)
 
 # メジアンランク法
 Pin = np.empty(max)
 for i in range(max):
-    Pin[i] = (i + 0.7) / (max + 0.4)
+    Pin[i] = (i+0.7) / (max+0.4)
 
 # 重複する値の判定
-for i in range(max - 2, 0, -1):
-    if(Qin[i] == Qin[i + 1]):
-        Pin[i] = Pin[i + 1]
+for i in range(max-2, 0, -1):
+    if(Qin[i] == Qin[i+1]):
+        Pin[i] = Pin[i+1]
 
 # 重複する値を除く
 Pin = np.unique(Pin)
@@ -69,7 +77,7 @@ bb = popt[1]
 # 決定係数
 residuals = ppp - func(qqq, popt[0], popt[1])
 rss = np.sum(residuals**2)
-tss = np.sum((ppp - np.mean(ppp))**2)
+tss = np.sum((ppp-np.mean(ppp))**2)
 r_squared = 1 - (rss / tss)
 
 # 図の書式
@@ -85,8 +93,8 @@ ax1.spines['left'].set_linewidth(0.1)
 ax1.spines['bottom'].set_linewidth(0.1)
 
 # x軸の最大・最小
-xmin = qqq[0] - (qqq[max - 1] - qqq[0]) / 100
-xmax = qqq[max - 1] + (qqq[max - 1] - qqq[0]) / 100
+xmin = qqq[0] - (qqq[max-1]-qqq[0])/100
+xmax = qqq[max-1] + (qqq[max-1]-qqq[0])/100
 
 # y軸の最大・最小
 if(Pin[0] > 0.001):
@@ -135,10 +143,10 @@ dy_tick_sub = norm.ppf(_dy_tick_sub, loc=0, scale=1)
 # x軸の目盛
 _dx = np.empty(7)
 _dx[0] = qqq[0]
-_dx[6] = qqq[max - 1]
+_dx[6] = qqq[max-1]
 
 # x軸の表示目盛の計算
-ddx = (_dx[6] - _dx[0]) / 6
+ddx = (_dx[6]-_dx[0])/6
 for i in range(1, 6, 1):
     _dx[i] = _dx[0] + ddx * i
 
@@ -162,11 +170,11 @@ ax1.scatter(qqq, ppp, s=8, marker=",", alpha=0.8, linewidths=0.1, c="fuchsia", e
 ax1.plot([qqq[0], qqq[max - 1]], [aa * qqq[0] + bb, aa * qqq[max - 1] + bb], color='navy', linestyle='-', linewidth=0.5, zorder=9)
 
 # 文字のプロット
-ax1.text(xmin - (xmax - xmin) / 35, ymax + (ymax - ymin) / 50, "F(t)　　　正規確率紙", ha='left', va='bottom', font="IPAexGothic", fontsize=6)
+ax1.text(xmin - (xmax-xmin)/35, ymax + (ymax-ymin)/50, "F(t)　　　正規確率紙", ha='left', va='bottom', font="IPAexGothic", fontsize=6)
 
 # 統計量の計算
-var = 1 / aa
-mean = -bb / aa
+var = 1/aa
+mean = -bb/aa
 print("\n正規分布")
 # 統計量の表示
 print('平均 = {mean:10.6f}'.format(**locals()))
@@ -189,7 +197,7 @@ bb = popt[1]
 # 決定係数
 residuals = ppp - func(qqq, popt[0], popt[1])
 rss = np.sum(residuals**2)
-tss = np.sum((ppp - np.mean(ppp))**2)
+tss = np.sum((ppp-np.mean(ppp))**2)
 r_squared = 1 - (rss / tss)
 
 # 図の書式
@@ -203,14 +211,14 @@ ax2.spines['bottom'].set_linewidth(0.1)
 
 # x軸の最大・最小
 for i in range(-10, 10):
-    if(10**i < Qin[0] < 10**(i + 1)):
+    if(10**i < Qin[0] < 10**(i+1)):
         _xmin = (10**i)
 
-    if(10**i < Qin[max - 1] < 10**(i + 1)):
-        _xmax = (10**(i + 1))
+    if(10**i < Qin[max-1] < 10**(i+1)):
+        _xmax = (10**(i+1))
 
-xmin = np.log(_xmin) - (np.log(_xmax) - np.log(_xmin)) / 100
-xmax = np.log(_xmax) + (np.log(_xmax) - np.log(_xmin)) / 100
+xmin = np.log(_xmin) - (np.log(_xmax)-np.log(_xmin))/100
+xmax = np.log(_xmax) + (np.log(_xmax)-np.log(_xmin))/100
 
 # y軸の最大・最小
 # 正規分布と同様
@@ -237,30 +245,30 @@ plt.hlines(dy_tick, xmin, xmax, color='mediumslateblue', alpha=0.5, linewidth=0.
 # x軸の目盛ラベル
 _dx = np.array([_xmin])
 for i in range(1, 20):
-    if(_xmin * 10**i <= _xmax):
-        _dx = np.append(_dx, _xmin * 10**i)
+    if(_xmin*10**i <= _xmax):
+        _dx = np.append(_dx, _xmin*10**i)
 
 dx = np.log(_dx)
 
 # 鉛直軸
 # 鉛直軸の準備
-_dx_tick_pre = np.array([_xmin, _xmin * 5])
+_dx_tick_pre = np.array([_xmin, _xmin*5])
 # 実際の表示用配列
-_dx_tick = np.array([_xmin, _xmin * 5])
+_dx_tick = np.array([_xmin, _xmin*5])
 for i in range(1, 20):
-    if(_xmin * 10**i < _xmax):
-        _dx_tick = np.append(_dx_tick, _dx_tick_pre * 10**i)
+    if(_xmin*10**i < _xmax):
+        _dx_tick = np.append(_dx_tick, _dx_tick_pre*10**i)
     # xmaxのみ一つ追加
-    if(_xmin * 10**i == _xmax):
-        _dx_tick = np.append(_dx_tick, _xmin * 10**i)
+    if(_xmin*10**i == _xmax):
+        _dx_tick = np.append(_dx_tick, _xmin*10**i)
 
 # 副目盛
-_dx_tick_pre = np.array([_xmin * 2, _xmin * 3, _xmin * 4, _xmin * 5])
+_dx_tick_pre = np.array([_xmin*2, _xmin*3, _xmin*4, _xmin*5])
 # 実際の表示用配列
-_dx_tick_sub = np.array([_xmin * 2, _xmin * 3, _xmin * 4, _xmin * 5])
+_dx_tick_sub = np.array([_xmin*2, _xmin*3, _xmin*4, _xmin*5])
 for i in range(1, 20):
-    if(_xmin * 10**i < _xmax):
-        _dx_tick_sub = np.append(_dx_tick_sub, _dx_tick_pre * 10**i)
+    if(_xmin*10**i < _xmax):
+        _dx_tick_sub = np.append(_dx_tick_sub, _dx_tick_pre*10**i)
 
 dx_tick = np.log(_dx_tick)
 dx_tick_sub = np.log(_dx_tick_sub)
@@ -287,13 +295,13 @@ ax2.scatter(qqq, ppp, s=8, marker="^", alpha=0.8, linewidths=0.1, c="lime", ec="
 ax2.plot([qqq[0], qqq[max - 1]], [aa * qqq[0] + bb, aa * qqq[max - 1] + bb], color='navy', linestyle='-', linewidth=0.5, zorder=9)
 
 # 文字のプロット
-ax2.text(xmin - (xmax - xmin) / 35, ymax + (ymax - ymin) / 50, "F(t)　　　対数正規確率紙", ha='left', va='bottom', font="IPAexGothic", fontsize=6)
+ax2.text(xmin - (xmax-xmin)/35, ymax + (ymax-ymin)/50, "F(t)　　　対数正規確率紙", ha='left', va='bottom', font="IPAexGothic", fontsize=6)
 
 # 統計量の計算
-var_log = 1 / aa
-mean_log = -bb / aa
+var_log = 1/aa
+mean_log = -bb/aa
 mean = math.exp(mean_log + var_log**2 / 2)
-var = math.exp(2 * mean_log + var_log**2) * (math.exp(var_log**2) - 1)
+var = math.exp(2*mean_log + var_log**2)*(math.exp(var_log**2) - 1)
 var = math.sqrt(var)
 # 統計量の表示
 print("\n対数正規分布")
@@ -319,7 +327,7 @@ bb = popt[1]
 # 決定係数
 residuals = ppp - func(qqq, popt[0], popt[1])
 rss = np.sum(residuals**2)
-tss = np.sum((ppp - np.mean(ppp))**2)
+tss = np.sum((ppp-np.mean(ppp))**2)
 r_squared = 1 - (rss / tss)
 
 # 図の書式
@@ -333,14 +341,14 @@ ax3.spines['bottom'].set_linewidth(0.1)
 
 # x軸の最大・最小
 for i in range(-10, 10):
-    if(10**i < Qin[0] < 10**(i + 1)):
+    if(10**i < Qin[0] < 10**(i+1)):
         _xmin = (10**i)
 
-    if(10**i < Qin[max - 1] < 10**(i + 1)):
-        _xmax = (10**(i + 1))
+    if(10**i < Qin[max-1] < 10**(i+1)):
+        _xmax = (10**(i+1))
 
-xmin = np.log(_xmin) - (np.log(_xmax) - np.log(_xmin)) / 100
-xmax = np.log(_xmax) + (np.log(_xmax) - np.log(_xmin)) / 100
+xmin = np.log(_xmin) - (np.log(_xmax)-np.log(_xmin))/100
+xmax = np.log(_xmax) + (np.log(_xmax)-np.log(_xmin))/100
 
 # y軸の最大・最小
 if(Pin[0] > 0.001):
@@ -383,37 +391,36 @@ if(Pin[0] > 0.001):
 elif(Pin[0] > 0.0001):
     _dy_tick_sub = np.array([0.0002, 0.0003, 0.0004, 0.0005, 0.002, 0.003, 0.004, 0.005, 0.02, 0.03, 0.04, 0.05, 0.2, 0.3, 0.4, 0.5, 0.8, 0.95])
 else:
-    _dy_tick_sub = np.array([0.00002, 0.00003, 0.00004, 0.00005, 0.0002, 0.0003, 0.0004, 0.0005, 0.002,
-                            0.003, 0.004, 0.005, 0.02, 0.03, 0.04, 0.05, 0.2, 0.3, 0.4, 0.5, 0.8, 0.95])
+    _dy_tick_sub = np.array([0.00002, 0.00003, 0.00004, 0.00005, 0.0002, 0.0003, 0.0004, 0.0005, 0.002, 0.003, 0.004, 0.005, 0.02, 0.03, 0.04, 0.05, 0.2, 0.3, 0.4, 0.5, 0.8, 0.95])
 dy_tick_sub = Weibull(_dy_tick_sub)
 
 # x軸の目盛ラベル
 _dx = np.array([_xmin])
 for i in range(1, 20):
-    if(_xmin * 10**i <= _xmax):
-        _dx = np.append(_dx, _xmin * 10**i)
+    if(_xmin*10**i <= _xmax):
+        _dx = np.append(_dx, _xmin*10**i)
 
 dx = np.log(_dx)
 
 # 鉛直軸
 # 鉛直軸の準備
-_dx_tick_pre = np.array([_xmin, _xmin * 5])
+_dx_tick_pre = np.array([_xmin, _xmin*5])
 # 実際の表示用配列
-_dx_tick = np.array([_xmin, _xmin * 5])
+_dx_tick = np.array([_xmin, _xmin*5])
 for i in range(1, 20):
-    if(_xmin * 10**i < _xmax):
-        _dx_tick = np.append(_dx_tick, _dx_tick_pre * 10**i)
+    if(_xmin*10**i < _xmax):
+        _dx_tick = np.append(_dx_tick, _dx_tick_pre*10**i)
     # xmaxのみ一つ追加
-    if(_xmin * 10**i == _xmax):
-        _dx_tick = np.append(_dx_tick, _xmin * 10**i)
+    if(_xmin*10**i == _xmax):
+        _dx_tick = np.append(_dx_tick, _xmin*10**i)
 
 # 副目盛
-_dx_tick_pre = np.array([_xmin * 2, _xmin * 3, _xmin * 4, _xmin * 5])
+_dx_tick_pre = np.array([_xmin*2, _xmin*3, _xmin*4, _xmin*5])
 # 実際の表示用配列
-_dx_tick_sub = np.array([_xmin * 2, _xmin * 3, _xmin * 4, _xmin * 5])
+_dx_tick_sub = np.array([_xmin*2, _xmin*3, _xmin*4, _xmin*5])
 for i in range(1, 20):
-    if(_xmin * 10**i < _xmax):
-        _dx_tick_sub = np.append(_dx_tick_sub, _dx_tick_pre * 10**i)
+    if(_xmin*10**i < _xmax):
+        _dx_tick_sub = np.append(_dx_tick_sub, _dx_tick_pre*10**i)
 
 dx_tick = np.log(_dx_tick)
 dx_tick_sub = np.log(_dx_tick_sub)
@@ -440,7 +447,7 @@ ax3.scatter(qqq, ppp, s=8, alpha=0.8, linewidths=0.1, c="mediumslateblue", ec="n
 ax3.plot([qqq[0], qqq[max - 1]], [aa * qqq[0] + bb, aa * qqq[max - 1] + bb], color='navy', linestyle='-', linewidth=0.5, zorder=9)
 
 # 文字のプロット
-ax3.text(xmin - (xmax - xmin) / 35, ymax + (ymax - ymin) / 50, "F(t)　　　ワイブル確率紙", ha='left', va='bottom', font="IPAexGothic", fontsize=6)
+ax3.text(xmin - (xmax-xmin)/35, ymax + (ymax-ymin)/50, "F(t)　　　ワイブル確率紙", ha='left', va='bottom', font="IPAexGothic", fontsize=6)
 
 # メジアンランク法の記載
 _gamma = -0.0
@@ -449,9 +456,9 @@ ax3.text(xmin + (xmax - xmin) / 3.5, ymax + (ymax - ymin) / 20, "$\gamma$ ={_gam
 
 # 統計量計算
 m = aa
-n = math.exp(-bb / aa)
-mean = n * math.gamma(1 + 1 / m)
-var = math.sqrt(n * n * (math.gamma(1 + 2 / m) - (math.gamma(1 + 1 / m))**2))
+n = math.exp(-bb/aa)
+mean = n * math.gamma(1+1/m)
+var = math.sqrt(n*n*(math.gamma(1+2/m) - (math.gamma(1+1/m))**2))
 # 統計量表示
 print("\nワイブル分布")
 print('形状パラメータ={m:10.6f}'.format(**locals()))
@@ -476,7 +483,7 @@ bb = popt[1]
 # 決定係数
 residuals = ppp - func(qqq, popt[0], popt[1])
 rss = np.sum(residuals**2)
-tss = np.sum((ppp - np.mean(ppp))**2)
+tss = np.sum((ppp-np.mean(ppp))**2)
 r_squared = 1 - (rss / tss)
 
 # 図の書式
@@ -489,8 +496,8 @@ ax4.spines['left'].set_linewidth(0.1)
 ax4.spines['bottom'].set_linewidth(0.1)
 
 # x軸の最大・最小
-xmin = qqq[0] - (qqq[max - 1] - qqq[0]) / 100
-xmax = qqq[max - 1] + (qqq[max - 1] - qqq[0]) / 100
+xmin = qqq[0] - (qqq[max-1]-qqq[0])/100
+xmax = qqq[max-1] + (qqq[max-1]-qqq[0])/100
 
 # y軸の最大・最小
 if(Pin[0] > 0.001):
@@ -538,10 +545,10 @@ dy_tick_sub = Gumbel(_dy_tick_sub)
 # x軸の目盛
 _dx = np.empty(7)
 _dx[0] = qqq[0]
-_dx[6] = qqq[max - 1]
+_dx[6] = qqq[max-1]
 
 # x軸の表示目盛の計算
-ddx = (_dx[6] - _dx[0]) / 6
+ddx = (_dx[6]-_dx[0])/6
 for i in range(1, 6, 1):
     _dx[i] = _dx[0] + ddx * i
 
@@ -565,12 +572,12 @@ ax4.scatter(qqq, ppp, s=8, marker="x", alpha=0.8, linewidths=0.1, c="red", zorde
 ax4.plot([qqq[0], qqq[max - 1]], [aa * qqq[0] + bb, aa * qqq[max - 1] + bb], color='navy', linestyle='-', linewidth=0.5, zorder=9)
 
 # 文字のプロット
-ax4.text(xmin - (xmax - xmin) / 35, ymax + (ymax - ymin) / 50, "F(t)　　　極値（最大）確率紙", ha='left', va='bottom', font="IPAexGothic", fontsize=6)
+ax4.text(xmin - (xmax-xmin)/35, ymax + (ymax-ymin)/50, "F(t)　　　極値（最大）確率紙", ha='left', va='bottom', font="IPAexGothic", fontsize=6)
 
 # 統計量の計算
-mu = -bb / aa
-n = 1 / aa
-mean = mu + np.euler_gamma * n
+mu = -bb/aa
+n = 1/aa
+mean = mu + np.euler_gamma*n
 var = math.sqrt(np.pi**2 * n**2 / 6)
 # 統計量の表示
 print("\n極値（最大）分布")

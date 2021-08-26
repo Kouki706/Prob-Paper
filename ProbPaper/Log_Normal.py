@@ -8,7 +8,7 @@ from matplotlib.backends.backend_pdf import PdfPages
 
 # 回帰式
 def func(x, a, b):
-    f = a * x + b
+    f = a*x + b
     return f
 
 # データの読み込み
@@ -29,12 +29,12 @@ print("データ数", max)
 # メジアンランク法
 Pin = np.empty(max)
 for i in range(max):
-    Pin[i] = (i + 0.7) / (max + 0.4)
+    Pin[i] = (i+0.7) / (max+0.4)
 
 # 重複する値の設定
-for i in range(max - 2, 0, -1):
-    if(Qin[i] == Qin[i + 1]):
-        Pin[i] = Pin[i + 1]
+for i in range(max-2, 0, -1):
+    if(Qin[i] == Qin[i+1]):
+        Pin[i] = Pin[i+1]
 
 # 重複する値の削除
 Pin = np.unique(Pin)
@@ -62,7 +62,7 @@ bb = popt[1]
 # 決定係数
 residuals = ppp - func(qqq, popt[0], popt[1])
 rss = np.sum(residuals**2)
-tss = np.sum((ppp - np.mean(ppp))**2)
+tss = np.sum((ppp-np.mean(ppp))**2)
 r_squared = 1 - (rss / tss)
 
 # 図の書式
@@ -79,14 +79,14 @@ ax.spines['bottom'].set_linewidth(0.1)
 
 # x軸の最大・最小
 for i in range(-5, 5):
-    if(10**i <= Qin[0] < 10**(i + 1)):
+    if(10**i <= Qin[0] < 10**(i+1)):
         _xmin = (10**i)
 
-    if(10**i < Qin[max - 1] <= 10**(i + 1)):
-        _xmax = (10**(i + 1))
+    if(10**i < Qin[max-1] <= 10**(i+1)):
+        _xmax = (10**(i+1))
 
-xmin = np.log(_xmin) - (np.log(_xmax) - np.log(_xmin)) / 100
-xmax = np.log(_xmax) + (np.log(_xmax) - np.log(_xmin)) / 100
+xmin = np.log(_xmin) - (np.log(_xmax)-np.log(_xmin))/100
+xmax = np.log(_xmax) + (np.log(_xmax)-np.log(_xmin))/100
 
 # y軸の最大・最小
 ymin = norm.ppf(0.0001, loc=0, scale=1)
@@ -110,7 +110,7 @@ _dy = _dy * 100
 _dy_tick = np.array([0.0001, 0.001, 0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.99, 0.999, 0.9999])
 dy_tick = norm.ppf(_dy_tick, loc=0, scale=1)
 # 水平軸の描画
-plt.hlines(dy_tick, xmin, xmax, color='mediumpurple', linewidth=0.1)
+plt.hlines(dy_tick, xmin, xmax, color='mediumslateblue', alpha=0.5, linewidth=0.1)
 plt.hlines(dy_tick[7], xmin, xmax, color='black', linewidth=0.1)
 # y軸副目盛の設定
 _dy_tick_sub = np.array([0.0005, 0.005, 0.05, 0.3, 0.4, 0.6, 0.7])
@@ -119,36 +119,36 @@ dy_tick_sub = norm.ppf(_dy_tick_sub, loc=0, scale=1)
 # x軸の目盛ラベル
 _dx = np.array([_xmin])
 for i in range(1, 10):
-    if(_xmin * 10**i <= _xmax):
-        _dx = np.append(_dx, _xmin * 10**i)
+    if(_xmin*10**i <= _xmax):
+        _dx = np.append(_dx, _xmin*10**i)
 
 dx = np.log(_dx)
 
 # 鉛直軸の描画
 # 鉛直軸の準備
-_dx_tick_pre = np.array([_xmin, _xmin * 5])
+_dx_tick_pre = np.array([_xmin, _xmin*5])
 # 実際の表示用配列
-_dx_tick = np.array([_xmin, _xmin * 5])
+_dx_tick = np.array([_xmin, _xmin*5])
 for i in range(1, 10):
-    if(_xmin * 10**i < _xmax):
-        _dx_tick = np.append(_dx_tick, _dx_tick_pre * 10**i)
+    if(_xmin*10**i < _xmax):
+        _dx_tick = np.append(_dx_tick, _dx_tick_pre*10**i)
     # xmaxのみ一つ追加
-    if(_xmin * 10**i == _xmax):
-        _dx_tick = np.append(_dx_tick, _xmin * 10**i)
+    if(_xmin*10**i == _xmax):
+        _dx_tick = np.append(_dx_tick, _xmin*10**i)
 
 # 副目盛
-_dx_tick_pre = np.array([_xmin * 2, _xmin * 3, _xmin * 4, _xmin * 5])
+_dx_tick_pre = np.array([_xmin*2, _xmin*3, _xmin*4, _xmin*5])
 # 実際の表示用配列
-_dx_tick_sub = np.array([_xmin * 2, _xmin * 3, _xmin * 4, _xmin * 5])
+_dx_tick_sub = np.array([_xmin*2, _xmin*3, _xmin*4, _xmin*5])
 for i in range(1, 10):
-    if(_xmin * 10**i < _xmax):
-        _dx_tick_sub = np.append(_dx_tick_sub, _dx_tick_pre * 10**i)
+    if(_xmin*10**i < _xmax):
+        _dx_tick_sub = np.append(_dx_tick_sub, _dx_tick_pre*10**i)
 
 dx_tick = np.log(_dx_tick)
 dx_tick_sub = np.log(_dx_tick_sub)
 
 # 鉛直軸の描画
-plt.vlines(dx_tick, ymin, ymax, color='mediumpurple', linewidth=0.1)
+plt.vlines(dx_tick, ymin, ymax, color='mediumslateblue', alpha=0.5, linewidth=0.1)
 
 # x軸目盛
 ax.get_xaxis().set_tick_params(pad=1)
@@ -182,20 +182,20 @@ ax_.set_yticklabels(["$\mu-3\sigma$", "$\mu-2\sigma$", "$\mu-\sigma$", "$\mu$", 
 
 # 値のプロット
 ax.scatter(qqq, ppp, s=2, alpha=0.7, linewidths=0.2, c="mediumslateblue", ec="navy", zorder=10)
-ax.plot([qqq[0], qqq[max - 1]], [aa * qqq[0] + bb, aa * qqq[max - 1] + bb], color='navy', linestyle='-', linewidth=0.3, zorder=9)
+ax.plot([qqq[0], qqq[max-1]], [aa*qqq[0] + bb, aa*qqq[max-1] + bb], color='navy', linestyle='-', linewidth=0.3, zorder=9)
 
 # 文字のプロット
-ax.text(xmin - (xmax - xmin) / 13, ymax + (ymax - ymin) / 50, "　　　メジアンランク法\nF(t)　(%)", ha='left', va='bottom', font="IPAexGothic", fontsize=4.5)
+ax.text(xmin - (xmax-xmin)/13, ymax + (ymax-ymin)/50, "　　　メジアンランク法\nF(t)　(%)", ha='left', va='bottom', font="IPAexGothic", fontsize=4.5)
 
 # 対数平均・標準偏差の計算
-var_log = 1 / aa
-mean_log = -bb / aa
+var_log = 1/aa
+mean_log = -bb/aa
 print('対数平均 = {mean_log:10.6f}'.format(**locals()))
 print('対数分散 = {var_log:10.6f}'.format(**locals()))
 
 # 平均の計算
 mean = math.exp(mean_log + var_log**2 / 2)
-var = math.exp(2 * mean_log + var_log**2) * (math.exp(var_log**2) - 1)
+var = math.exp(2*mean_log + var_log**2)*(math.exp(var_log**2) - 1)
 var = math.sqrt(var)
 
 # 図中に統計量のプロット
@@ -206,7 +206,7 @@ boxdic = {
     "linewidth": 0.15,
 }
 _gamma = 0.0
-ax.text(xmin + (xmax - xmin) / 45, ymax - (ymax - ymin) / 8.5,
+ax.text(xmin + (xmax-xmin)/45, ymax - (ymax-ymin)/8.5,
         "\t $\mu$ ={mean_log:15.4f}\n\t $\sigma$ ={var_log:15.4f}\n\t $\gamma$ ={_gamma:15.4f}\nMTTF ={mean:15.4f}".format(**locals()), fontsize=4, bbox=boxdic)
 
 # 平均の表示

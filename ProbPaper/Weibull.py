@@ -8,11 +8,11 @@ import matplotlib.pyplot as plt
 
 # Weibull逆関数
 def Weibull(x):
-    return np.log(np.log(1 / (1 - x)))
+    return np.log(np.log(1/(1-x)))
 
 # 回帰式
 def func(x, a, b):
-    f = a * x + b
+    f = a*x + b
     return f
 
 # データの読み込み
@@ -33,12 +33,12 @@ print("データ数", max)
 # メジアンランク法
 Pin = np.empty(max)
 for i in range(max):
-    Pin[i] = (i + 0.7) / (max + 0.4)
+    Pin[i] = (i+0.7) / (max+0.4)
 
 # 重複する値の設定
-for i in range(max - 2, 0, -1):
-    if(Qin[i] == Qin[i + 1]):
-        Pin[i] = Pin[i + 1]
+for i in range(max-2, 0, -1):
+    if(Qin[i] == Qin[i+1]):
+        Pin[i] = Pin[i+1]
 
 # 重複する値の削除
 Pin = np.unique(Pin)
@@ -66,7 +66,7 @@ bb = popt[1]
 # 決定係数
 residuals = ppp - func(qqq, popt[0], popt[1])
 rss = np.sum(residuals**2)
-tss = np.sum((ppp - np.mean(ppp))**2)
+tss = np.sum((ppp-np.mean(ppp))**2)
 r_squared = 1 - (rss / tss)
 
 # 図の書式
@@ -83,14 +83,14 @@ ax.spines['bottom'].set_linewidth(0.1)
 
 # x軸の最大・最小
 for i in range(-5, 5):
-    if(10**i < Qin[0] < 10**(i + 1)):
+    if(10**i <= Qin[0] < 10**(i+1)):
         _xmin = (10**i)
 
-    if(10**i < Qin[max - 1] < 10**(i + 1)):
-        _xmax = (10**(i + 1))
+    if(10**i < Qin[max-1] <= 10**(i+1)):
+        _xmax = (10**(i+1))
 
-xmin = np.log(_xmin) - (np.log(_xmax) - np.log(_xmin)) / 100
-xmax = np.log(_xmax) + (np.log(_xmax) - np.log(_xmin)) / 100
+xmin = np.log(_xmin) - (np.log(_xmax)-np.log(_xmin))/100
+xmax = np.log(_xmax) + (np.log(_xmax)-np.log(_xmin))/100
 
 # y軸の最大・最小
 if(Pin[0] < 0.001):
@@ -133,30 +133,30 @@ plt.hlines(0, xmin, xmax, color='black', linewidth=0.1)
 # x軸の目盛ラベル
 _dx = np.array([_xmin], dtype="float")
 for i in range(1, 10):
-    if(_xmin * 10**i <= _xmax):
-        _dx = np.append(_dx, _xmin * 10**i)
+    if(_xmin*10**i <= _xmax):
+        _dx = np.append(_dx, _xmin*10**i)
 
 dx = np.log(_dx)
 
 # 鉛直軸
 # 鉛直軸の準備
-_dx_tick_pre = np.array([_xmin, _xmin * 5])
+_dx_tick_pre = np.array([_xmin, _xmin*5])
 # 実際の表示用配列
-_dx_tick = np.array([_xmin, _xmin * 5])
+_dx_tick = np.array([_xmin, _xmin*5])
 for i in range(1, 10):
-    if(_xmin * 10**i < _xmax):
-        _dx_tick = np.append(_dx_tick, _dx_tick_pre * 10**i)
+    if(_xmin*10**i < _xmax):
+        _dx_tick = np.append(_dx_tick, _dx_tick_pre*10**i)
     # xmaxのみ一つ追加
-    if(_xmin * 10**i == _xmax):
-        _dx_tick = np.append(_dx_tick, _xmin * 10**i)
+    if(_xmin*10**i == _xmax):
+        _dx_tick = np.append(_dx_tick, _xmin*10**i)
 
 # 副目盛
-_dx_tick_pre = np.array([_xmin * 2, _xmin * 3, _xmin * 4, _xmin * 5])
+_dx_tick_pre = np.array([_xmin*2, _xmin*3, _xmin*4, _xmin*5])
 # 実際の表示用配列
-_dx_tick_sub = np.array([_xmin * 2, _xmin * 3, _xmin * 4, _xmin * 5])
+_dx_tick_sub = np.array([_xmin*2, _xmin*3, _xmin*4, _xmin*5])
 for i in range(1, 10):
-    if(_xmin * 10**i < _xmax):
-        _dx_tick_sub = np.append(_dx_tick_sub, _dx_tick_pre * 10**i)
+    if(_xmin*10**i < _xmax):
+        _dx_tick_sub = np.append(_dx_tick_sub, _dx_tick_pre*10**i)
 
 dx_tick = np.log(_dx_tick)
 dx_tick_sub = np.log(_dx_tick_sub)
@@ -212,21 +212,24 @@ secax.set_xticks(_dx_top_sub, minor=True)
 
 # 値のプロット
 ax.scatter(qqq, ppp, s=2, alpha=0.7, linewidths=0.2, c="mediumslateblue", ec="navy", zorder=10)
-ax.plot([qqq[0], qqq[max - 1]], [aa * qqq[0] + bb, aa * qqq[max - 1] + bb], color='navy', linestyle='-', linewidth=0.3, zorder=9)
+ax.plot([qqq[0], qqq[max-1]], [aa*qqq[0] + bb, aa*qqq[max-1] + bb], color='navy', linestyle='-', linewidth=0.3, zorder=9)
 
 # 文字のプロット
-ax.text(xmin - (xmax - xmin) / 13, ymax + (ymax - ymin) / 50, "　　　メジアンランク法\nF(t)　(%)", ha='left', va='bottom', font="IPAexGothic", fontsize=4.5)
+ax.text(xmin - (xmax-xmin)/13, ymax + (ymax-ymin)/50, "　　　メジアンランク法\nF(t)　(%)", ha='left', va='bottom', font="IPAexGothic", fontsize=4.5)
 
 # 統計量計算
 m = aa
-n = math.exp(-bb / aa)
-mean = n * math.gamma(1 + 1 / m)
-var = math.sqrt(n * n * (math.gamma(1 + 2 / m) - (math.gamma(1 + 1 / m))**2))
+n = math.exp(-bb/aa)
+mean = n * math.gamma(1+1/m)
+var = math.sqrt(n*n*(math.gamma(1+2/m) - (math.gamma(1+1/m))**2))
 # 統計量表示
 print('形状パラメータ={m:10.6f}'.format(**locals()))
 print('尺度パラメータ={n:10.6f}'.format(**locals()))
 print('平均={mean:10.6f}'.format(**locals()))
 print('標準偏差={var:10.6f}'.format(**locals()))
+# 相関距離の表示
+print('相関係数={rr[0][1]:10.6f}'.format(**locals()))
+print('決定係数={r_squared:10.6f}'.format(**locals()))
 
 #　Boxのプロット
 boxdic = {
@@ -236,18 +239,18 @@ boxdic = {
     "linewidth": 0.15,
 }
 _gamma = 0.0
-ax.text(xmin + (xmax - xmin) / 45, ymax - (ymax - ymin) / 8.5,
+ax.text(xmin + (xmax-xmin)/45, ymax - (ymax-ymin)/8.5,
         "\t$m$ ={m:10.4f}\n\t $\eta$ ={n:10.4f}\n\t $\gamma$ ={_gamma:10.4f}\nMTTF ={mean:10.4f}".format(**locals()), fontsize=4, bbox=boxdic)
 
 # Weibullの軸
-wei_line = 0 - (xmax - xmin) / 10
-plt.hlines(-m, -m / aa + wei_line, xmax, color='black', linewidth=0.15)
-cc = -aa * wei_line
-ax.plot([-m / aa + wei_line, wei_line], [-m, 0.0], color='black', linestyle='-', linewidth=0.15)
+if(1.0 / _xmin > _xmax):
+    wei_line =0
+else:
+    wei_line = 1
+plt.hlines(-m, -m/aa+wei_line, xmax, color='black', linewidth=0.15)
+cc = -aa*wei_line
+ax.plot([-m/aa+wei_line, wei_line], [-m, 0.0], color='black', linestyle='-', linewidth=0.15)
 
-# 相関距離の表示
-print('相関係数={rr[0][1]:10.6f}'.format(**locals()))
-print('決定係数={r_squared:10.6f}'.format(**locals()))
 plt.show()
 
 # %%
